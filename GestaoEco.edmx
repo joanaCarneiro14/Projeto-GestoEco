@@ -1,0 +1,829 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Gestão_EconomatoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id_Utilizador" />
+          </Key>
+          <Property Name="Id_Utilizador" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Saldo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EncomendasCliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="data_entregue" Type="date" />
+          <Property Name="data_pedido" Type="date" Nullable="false" />
+          <Property Name="Id_Cliente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="estado" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id_Funcionario" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EncomendasFornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="data_recebido" Type="date" />
+          <Property Name="data_pedido" Type="date" Nullable="false" />
+          <Property Name="Id_Funcionario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id_Fornecedor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Fornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telefone" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Funcionario">
+          <Key>
+            <PropertyRef Name="Id_Utilizador" />
+          </Key>
+          <Property Name="Id_Utilizador" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cargo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Plafond">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="data" Type="date" Nullable="false" />
+          <Property Name="quantidade_pedida" Type="int" Nullable="false" />
+          <Property Name="estado" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id_Cliente" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Produto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Setor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Stock" Type="int" Nullable="false" />
+          <Property Name="Preco" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Produto_Fornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Produto" Type="int" Nullable="false" />
+          <Property Name="Id_Fornecedor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProdutoEncomendarCliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Produto" Type="int" Nullable="false" />
+          <Property Name="unidades" Type="int" Nullable="false" />
+          <Property Name="preco" Type="int" Nullable="false" />
+          <Property Name="Id_EncomendasCliente" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProdutoEncomendarFornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id_Produto" Type="int" Nullable="false" />
+          <Property Name="unidades" Type="int" Nullable="false" />
+          <Property Name="preco" Type="int" Nullable="false" />
+          <Property Name="Id_EncomendasFornecedor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Utilizadores">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="int" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Morada" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telefone" Type="int" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Cliente_Utilizadores">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="Id_Utilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasCliente_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="EncomendasCliente" Type="Self.EncomendasCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="EncomendasCliente">
+              <PropertyRef Name="Id_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasCliente_Funcionario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="EncomendasCliente" Type="Self.EncomendasCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="EncomendasCliente">
+              <PropertyRef Name="Id_Funcionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasFornecedor_Fornecedor">
+          <End Role="Fornecedor" Type="Self.Fornecedor" Multiplicity="1" />
+          <End Role="EncomendasFornecedor" Type="Self.EncomendasFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fornecedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EncomendasFornecedor">
+              <PropertyRef Name="Id_Fornecedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasFornecedor_Funcionario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="EncomendasFornecedor" Type="Self.EncomendasFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="EncomendasFornecedor">
+              <PropertyRef Name="Id_Funcionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Funcionario_Utilizadores">
+          <End Role="Utilizadores" Type="Self.Utilizadores" Multiplicity="1" />
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="Id_Utilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Plafond_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Plafond" Type="Self.Plafond" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="Plafond">
+              <PropertyRef Name="Id_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Produto_Fornecedor_Fornecedor">
+          <End Role="Fornecedor" Type="Self.Fornecedor" Multiplicity="1" />
+          <End Role="Produto_Fornecedor" Type="Self.Produto_Fornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fornecedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Produto_Fornecedor">
+              <PropertyRef Name="Id_Fornecedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Produto_Fornecedor_Produto">
+          <End Role="Produto" Type="Self.Produto" Multiplicity="1" />
+          <End Role="Produto_Fornecedor" Type="Self.Produto_Fornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Produto_Fornecedor">
+              <PropertyRef Name="Id_Produto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarCliente_EncomendasCliente">
+          <End Role="EncomendasCliente" Type="Self.EncomendasCliente" Multiplicity="1" />
+          <End Role="ProdutoEncomendarCliente" Type="Self.ProdutoEncomendarCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncomendasCliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarCliente">
+              <PropertyRef Name="Id_EncomendasCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarCliente_Produto">
+          <End Role="Produto" Type="Self.Produto" Multiplicity="1" />
+          <End Role="ProdutoEncomendarCliente" Type="Self.ProdutoEncomendarCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarCliente">
+              <PropertyRef Name="Id_Produto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarFornecedor_EncomendasFornecedor">
+          <End Role="EncomendasFornecedor" Type="Self.EncomendasFornecedor" Multiplicity="1" />
+          <End Role="ProdutoEncomendarFornecedor" Type="Self.ProdutoEncomendarFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncomendasFornecedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarFornecedor">
+              <PropertyRef Name="Id_EncomendasFornecedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarFornecedor_Produto">
+          <End Role="Produto" Type="Self.Produto" Multiplicity="1" />
+          <End Role="ProdutoEncomendarFornecedor" Type="Self.ProdutoEncomendarFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarFornecedor">
+              <PropertyRef Name="Id_Produto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Gestão_EconomatoModelStoreContainer">
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EncomendasCliente" EntityType="Self.EncomendasCliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EncomendasFornecedor" EntityType="Self.EncomendasFornecedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fornecedor" EntityType="Self.Fornecedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Funcionario" EntityType="Self.Funcionario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plafond" EntityType="Self.Plafond" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Produto" EntityType="Self.Produto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Produto_Fornecedor" EntityType="Self.Produto_Fornecedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProdutoEncomendarCliente" EntityType="Self.ProdutoEncomendarCliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProdutoEncomendarFornecedor" EntityType="Self.ProdutoEncomendarFornecedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Utilizadores" EntityType="Self.Utilizadores" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cliente_Utilizadores" Association="Self.FK_Cliente_Utilizadores">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasCliente_Cliente" Association="Self.FK_EncomendasCliente_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="EncomendasCliente" EntitySet="EncomendasCliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasCliente_Funcionario" Association="Self.FK_EncomendasCliente_Funcionario">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="EncomendasCliente" EntitySet="EncomendasCliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasFornecedor_Fornecedor" Association="Self.FK_EncomendasFornecedor_Fornecedor">
+            <End Role="Fornecedor" EntitySet="Fornecedor" />
+            <End Role="EncomendasFornecedor" EntitySet="EncomendasFornecedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasFornecedor_Funcionario" Association="Self.FK_EncomendasFornecedor_Funcionario">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="EncomendasFornecedor" EntitySet="EncomendasFornecedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Funcionario_Utilizadores" Association="Self.FK_Funcionario_Utilizadores">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Funcionario" EntitySet="Funcionario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Plafond_Cliente" Association="Self.FK_Plafond_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Plafond" EntitySet="Plafond" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Produto_Fornecedor_Fornecedor" Association="Self.FK_Produto_Fornecedor_Fornecedor">
+            <End Role="Fornecedor" EntitySet="Fornecedor" />
+            <End Role="Produto_Fornecedor" EntitySet="Produto_Fornecedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Produto_Fornecedor_Produto" Association="Self.FK_Produto_Fornecedor_Produto">
+            <End Role="Produto" EntitySet="Produto" />
+            <End Role="Produto_Fornecedor" EntitySet="Produto_Fornecedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarCliente_EncomendasCliente" Association="Self.FK_ProdutoEncomendarCliente_EncomendasCliente">
+            <End Role="EncomendasCliente" EntitySet="EncomendasCliente" />
+            <End Role="ProdutoEncomendarCliente" EntitySet="ProdutoEncomendarCliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarCliente_Produto" Association="Self.FK_ProdutoEncomendarCliente_Produto">
+            <End Role="Produto" EntitySet="Produto" />
+            <End Role="ProdutoEncomendarCliente" EntitySet="ProdutoEncomendarCliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarFornecedor_EncomendasFornecedor" Association="Self.FK_ProdutoEncomendarFornecedor_EncomendasFornecedor">
+            <End Role="EncomendasFornecedor" EntitySet="EncomendasFornecedor" />
+            <End Role="ProdutoEncomendarFornecedor" EntitySet="ProdutoEncomendarFornecedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarFornecedor_Produto" Association="Self.FK_ProdutoEncomendarFornecedor_Produto">
+            <End Role="Produto" EntitySet="Produto" />
+            <End Role="ProdutoEncomendarFornecedor" EntitySet="ProdutoEncomendarFornecedor" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Gestão_EconomatoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id_Utilizador" />
+          </Key>
+          <Property Name="Id_Utilizador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Saldo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Utilizadore" Relationship="Self.FK_Cliente_Utilizadores" FromRole="Cliente" ToRole="Utilizadores" />
+          <NavigationProperty Name="EncomendasClientes" Relationship="Self.FK_EncomendasCliente_Cliente" FromRole="Cliente" ToRole="EncomendasCliente" />
+          <NavigationProperty Name="Plafonds" Relationship="Self.FK_Plafond_Cliente" FromRole="Cliente" ToRole="Plafond" />
+        </EntityType>
+        <EntityType Name="EncomendasCliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="data_entregue" Type="DateTime" Precision="0" />
+          <Property Name="data_pedido" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Id_Cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id_Funcionario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_EncomendasCliente_Cliente" FromRole="EncomendasCliente" ToRole="Cliente" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK_EncomendasCliente_Funcionario" FromRole="EncomendasCliente" ToRole="Funcionario" />
+          <NavigationProperty Name="ProdutoEncomendarClientes" Relationship="Self.FK_ProdutoEncomendarCliente_EncomendasCliente" FromRole="EncomendasCliente" ToRole="ProdutoEncomendarCliente" />
+        </EntityType>
+        <EntityType Name="EncomendasFornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="data_recebido" Type="DateTime" Precision="0" />
+          <Property Name="data_pedido" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Id_Funcionario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id_Fornecedor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fornecedor" Relationship="Self.FK_EncomendasFornecedor_Fornecedor" FromRole="EncomendasFornecedor" ToRole="Fornecedor" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK_EncomendasFornecedor_Funcionario" FromRole="EncomendasFornecedor" ToRole="Funcionario" />
+          <NavigationProperty Name="ProdutoEncomendarFornecedors" Relationship="Self.FK_ProdutoEncomendarFornecedor_EncomendasFornecedor" FromRole="EncomendasFornecedor" ToRole="ProdutoEncomendarFornecedor" />
+        </EntityType>
+        <EntityType Name="Fornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefone" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="EncomendasFornecedors" Relationship="Self.FK_EncomendasFornecedor_Fornecedor" FromRole="Fornecedor" ToRole="EncomendasFornecedor" />
+          <NavigationProperty Name="Produto_Fornecedor" Relationship="Self.FK_Produto_Fornecedor_Fornecedor" FromRole="Fornecedor" ToRole="Produto_Fornecedor" />
+        </EntityType>
+        <EntityType Name="Funcionario">
+          <Key>
+            <PropertyRef Name="Id_Utilizador" />
+          </Key>
+          <Property Name="Id_Utilizador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cargo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="EncomendasClientes" Relationship="Self.FK_EncomendasCliente_Funcionario" FromRole="Funcionario" ToRole="EncomendasCliente" />
+          <NavigationProperty Name="EncomendasFornecedors" Relationship="Self.FK_EncomendasFornecedor_Funcionario" FromRole="Funcionario" ToRole="EncomendasFornecedor" />
+          <NavigationProperty Name="Utilizadore" Relationship="Self.FK_Funcionario_Utilizadores" FromRole="Funcionario" ToRole="Utilizadores" />
+        </EntityType>
+        <EntityType Name="Plafond">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="data" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="quantidade_pedida" Type="Int32" Nullable="false" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id_Cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Plafond_Cliente" FromRole="Plafond" ToRole="Cliente" />
+        </EntityType>
+        <EntityType Name="Produto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Setor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Stock" Type="Int32" Nullable="false" />
+          <Property Name="Preco" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Produto_Fornecedor" Relationship="Self.FK_Produto_Fornecedor_Produto" FromRole="Produto" ToRole="Produto_Fornecedor" />
+          <NavigationProperty Name="ProdutoEncomendarClientes" Relationship="Self.FK_ProdutoEncomendarCliente_Produto" FromRole="Produto" ToRole="ProdutoEncomendarCliente" />
+          <NavigationProperty Name="ProdutoEncomendarFornecedors" Relationship="Self.FK_ProdutoEncomendarFornecedor_Produto" FromRole="Produto" ToRole="ProdutoEncomendarFornecedor" />
+        </EntityType>
+        <EntityType Name="Produto_Fornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Produto" Type="Int32" Nullable="false" />
+          <Property Name="Id_Fornecedor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fornecedor" Relationship="Self.FK_Produto_Fornecedor_Fornecedor" FromRole="Produto_Fornecedor" ToRole="Fornecedor" />
+          <NavigationProperty Name="Produto" Relationship="Self.FK_Produto_Fornecedor_Produto" FromRole="Produto_Fornecedor" ToRole="Produto" />
+        </EntityType>
+        <EntityType Name="ProdutoEncomendarCliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Produto" Type="Int32" Nullable="false" />
+          <Property Name="unidades" Type="Int32" Nullable="false" />
+          <Property Name="preco" Type="Int32" Nullable="false" />
+          <Property Name="Id_EncomendasCliente" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EncomendasCliente" Relationship="Self.FK_ProdutoEncomendarCliente_EncomendasCliente" FromRole="ProdutoEncomendarCliente" ToRole="EncomendasCliente" />
+          <NavigationProperty Name="Produto" Relationship="Self.FK_ProdutoEncomendarCliente_Produto" FromRole="ProdutoEncomendarCliente" ToRole="Produto" />
+        </EntityType>
+        <EntityType Name="ProdutoEncomendarFornecedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id_Produto" Type="Int32" Nullable="false" />
+          <Property Name="unidades" Type="Int32" Nullable="false" />
+          <Property Name="preco" Type="Int32" Nullable="false" />
+          <Property Name="Id_EncomendasFornecedor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EncomendasFornecedor" Relationship="Self.FK_ProdutoEncomendarFornecedor_EncomendasFornecedor" FromRole="ProdutoEncomendarFornecedor" ToRole="EncomendasFornecedor" />
+          <NavigationProperty Name="Produto" Relationship="Self.FK_ProdutoEncomendarFornecedor_Produto" FromRole="ProdutoEncomendarFornecedor" ToRole="Produto" />
+        </EntityType>
+        <EntityType Name="Utilizadore">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="Int32" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Morada" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefone" Type="Int32" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Cliente_Utilizadores" FromRole="Utilizadores" ToRole="Cliente" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK_Funcionario_Utilizadores" FromRole="Utilizadores" ToRole="Funcionario" />
+        </EntityType>
+        <Association Name="FK_Cliente_Utilizadores">
+          <End Role="Utilizadores" Type="Self.Utilizadore" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="Id_Utilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasCliente_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="EncomendasCliente" Type="Self.EncomendasCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="EncomendasCliente">
+              <PropertyRef Name="Id_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Plafond_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Plafond" Type="Self.Plafond" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="Plafond">
+              <PropertyRef Name="Id_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasCliente_Funcionario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="EncomendasCliente" Type="Self.EncomendasCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="EncomendasCliente">
+              <PropertyRef Name="Id_Funcionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarCliente_EncomendasCliente">
+          <End Role="EncomendasCliente" Type="Self.EncomendasCliente" Multiplicity="1" />
+          <End Role="ProdutoEncomendarCliente" Type="Self.ProdutoEncomendarCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncomendasCliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarCliente">
+              <PropertyRef Name="Id_EncomendasCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasFornecedor_Fornecedor">
+          <End Role="Fornecedor" Type="Self.Fornecedor" Multiplicity="1" />
+          <End Role="EncomendasFornecedor" Type="Self.EncomendasFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fornecedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EncomendasFornecedor">
+              <PropertyRef Name="Id_Fornecedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncomendasFornecedor_Funcionario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="EncomendasFornecedor" Type="Self.EncomendasFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="Id_Utilizador" />
+            </Principal>
+            <Dependent Role="EncomendasFornecedor">
+              <PropertyRef Name="Id_Funcionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarFornecedor_EncomendasFornecedor">
+          <End Role="EncomendasFornecedor" Type="Self.EncomendasFornecedor" Multiplicity="1" />
+          <End Role="ProdutoEncomendarFornecedor" Type="Self.ProdutoEncomendarFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncomendasFornecedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarFornecedor">
+              <PropertyRef Name="Id_EncomendasFornecedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Produto_Fornecedor_Fornecedor">
+          <End Role="Fornecedor" Type="Self.Fornecedor" Multiplicity="1" />
+          <End Role="Produto_Fornecedor" Type="Self.Produto_Fornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fornecedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Produto_Fornecedor">
+              <PropertyRef Name="Id_Fornecedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Funcionario_Utilizadores">
+          <End Role="Utilizadores" Type="Self.Utilizadore" Multiplicity="1" />
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Utilizadores">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="Id_Utilizador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Produto_Fornecedor_Produto">
+          <End Role="Produto" Type="Self.Produto" Multiplicity="1" />
+          <End Role="Produto_Fornecedor" Type="Self.Produto_Fornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Produto_Fornecedor">
+              <PropertyRef Name="Id_Produto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarCliente_Produto">
+          <End Role="Produto" Type="Self.Produto" Multiplicity="1" />
+          <End Role="ProdutoEncomendarCliente" Type="Self.ProdutoEncomendarCliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarCliente">
+              <PropertyRef Name="Id_Produto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProdutoEncomendarFornecedor_Produto">
+          <End Role="Produto" Type="Self.Produto" Multiplicity="1" />
+          <End Role="ProdutoEncomendarFornecedor" Type="Self.ProdutoEncomendarFornecedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProdutoEncomendarFornecedor">
+              <PropertyRef Name="Id_Produto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Gestão_EconomatoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="EncomendasClientes" EntityType="Self.EncomendasCliente" />
+          <EntitySet Name="EncomendasFornecedors" EntityType="Self.EncomendasFornecedor" />
+          <EntitySet Name="Fornecedors" EntityType="Self.Fornecedor" />
+          <EntitySet Name="Funcionarios" EntityType="Self.Funcionario" />
+          <EntitySet Name="Plafonds" EntityType="Self.Plafond" />
+          <EntitySet Name="Produtoes" EntityType="Self.Produto" />
+          <EntitySet Name="Produto_Fornecedor" EntityType="Self.Produto_Fornecedor" />
+          <EntitySet Name="ProdutoEncomendarClientes" EntityType="Self.ProdutoEncomendarCliente" />
+          <EntitySet Name="ProdutoEncomendarFornecedors" EntityType="Self.ProdutoEncomendarFornecedor" />
+          <EntitySet Name="Utilizadores" EntityType="Self.Utilizadore" />
+          <AssociationSet Name="FK_Cliente_Utilizadores" Association="Self.FK_Cliente_Utilizadores">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Cliente" EntitySet="Clientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasCliente_Cliente" Association="Self.FK_EncomendasCliente_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="EncomendasCliente" EntitySet="EncomendasClientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Plafond_Cliente" Association="Self.FK_Plafond_Cliente">
+            <End Role="Cliente" EntitySet="Clientes" />
+            <End Role="Plafond" EntitySet="Plafonds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasCliente_Funcionario" Association="Self.FK_EncomendasCliente_Funcionario">
+            <End Role="Funcionario" EntitySet="Funcionarios" />
+            <End Role="EncomendasCliente" EntitySet="EncomendasClientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarCliente_EncomendasCliente" Association="Self.FK_ProdutoEncomendarCliente_EncomendasCliente">
+            <End Role="EncomendasCliente" EntitySet="EncomendasClientes" />
+            <End Role="ProdutoEncomendarCliente" EntitySet="ProdutoEncomendarClientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasFornecedor_Fornecedor" Association="Self.FK_EncomendasFornecedor_Fornecedor">
+            <End Role="Fornecedor" EntitySet="Fornecedors" />
+            <End Role="EncomendasFornecedor" EntitySet="EncomendasFornecedors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncomendasFornecedor_Funcionario" Association="Self.FK_EncomendasFornecedor_Funcionario">
+            <End Role="Funcionario" EntitySet="Funcionarios" />
+            <End Role="EncomendasFornecedor" EntitySet="EncomendasFornecedors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarFornecedor_EncomendasFornecedor" Association="Self.FK_ProdutoEncomendarFornecedor_EncomendasFornecedor">
+            <End Role="EncomendasFornecedor" EntitySet="EncomendasFornecedors" />
+            <End Role="ProdutoEncomendarFornecedor" EntitySet="ProdutoEncomendarFornecedors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Produto_Fornecedor_Fornecedor" Association="Self.FK_Produto_Fornecedor_Fornecedor">
+            <End Role="Fornecedor" EntitySet="Fornecedors" />
+            <End Role="Produto_Fornecedor" EntitySet="Produto_Fornecedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Funcionario_Utilizadores" Association="Self.FK_Funcionario_Utilizadores">
+            <End Role="Utilizadores" EntitySet="Utilizadores" />
+            <End Role="Funcionario" EntitySet="Funcionarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Produto_Fornecedor_Produto" Association="Self.FK_Produto_Fornecedor_Produto">
+            <End Role="Produto" EntitySet="Produtoes" />
+            <End Role="Produto_Fornecedor" EntitySet="Produto_Fornecedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarCliente_Produto" Association="Self.FK_ProdutoEncomendarCliente_Produto">
+            <End Role="Produto" EntitySet="Produtoes" />
+            <End Role="ProdutoEncomendarCliente" EntitySet="ProdutoEncomendarClientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProdutoEncomendarFornecedor_Produto" Association="Self.FK_ProdutoEncomendarFornecedor_Produto">
+            <End Role="Produto" EntitySet="Produtoes" />
+            <End Role="ProdutoEncomendarFornecedor" EntitySet="ProdutoEncomendarFornecedors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Gestão_EconomatoModelStoreContainer" CdmEntityContainer="Gestão_EconomatoEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="Id_Utilizador" ColumnName="Id_Utilizador" />
+                <ScalarProperty Name="Saldo" ColumnName="Saldo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EncomendasClientes">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.EncomendasCliente">
+              <MappingFragment StoreEntitySet="EncomendasCliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="data_entregue" ColumnName="data_entregue" />
+                <ScalarProperty Name="data_pedido" ColumnName="data_pedido" />
+                <ScalarProperty Name="Id_Cliente" ColumnName="Id_Cliente" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="Id_Funcionario" ColumnName="Id_Funcionario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EncomendasFornecedors">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.EncomendasFornecedor">
+              <MappingFragment StoreEntitySet="EncomendasFornecedor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="data_recebido" ColumnName="data_recebido" />
+                <ScalarProperty Name="data_pedido" ColumnName="data_pedido" />
+                <ScalarProperty Name="Id_Funcionario" ColumnName="Id_Funcionario" />
+                <ScalarProperty Name="Id_Fornecedor" ColumnName="Id_Fornecedor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fornecedors">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.Fornecedor">
+              <MappingFragment StoreEntitySet="Fornecedor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Telefone" ColumnName="Telefone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Funcionarios">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.Funcionario">
+              <MappingFragment StoreEntitySet="Funcionario">
+                <ScalarProperty Name="Id_Utilizador" ColumnName="Id_Utilizador" />
+                <ScalarProperty Name="Cargo" ColumnName="Cargo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Plafonds">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.Plafond">
+              <MappingFragment StoreEntitySet="Plafond">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="data" ColumnName="data" />
+                <ScalarProperty Name="quantidade_pedida" ColumnName="quantidade_pedida" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="Id_Cliente" ColumnName="Id_Cliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Produtoes">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.Produto">
+              <MappingFragment StoreEntitySet="Produto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Setor" ColumnName="Setor" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Preco" ColumnName="Preco" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Produto_Fornecedor">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.Produto_Fornecedor">
+              <MappingFragment StoreEntitySet="Produto_Fornecedor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Id_Produto" ColumnName="Id_Produto" />
+                <ScalarProperty Name="Id_Fornecedor" ColumnName="Id_Fornecedor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProdutoEncomendarClientes">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.ProdutoEncomendarCliente">
+              <MappingFragment StoreEntitySet="ProdutoEncomendarCliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Id_Produto" ColumnName="Id_Produto" />
+                <ScalarProperty Name="unidades" ColumnName="unidades" />
+                <ScalarProperty Name="preco" ColumnName="preco" />
+                <ScalarProperty Name="Id_EncomendasCliente" ColumnName="Id_EncomendasCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProdutoEncomendarFornecedors">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.ProdutoEncomendarFornecedor">
+              <MappingFragment StoreEntitySet="ProdutoEncomendarFornecedor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Id_Produto" ColumnName="Id_Produto" />
+                <ScalarProperty Name="unidades" ColumnName="unidades" />
+                <ScalarProperty Name="preco" ColumnName="preco" />
+                <ScalarProperty Name="Id_EncomendasFornecedor" ColumnName="Id_EncomendasFornecedor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Utilizadores">
+            <EntityTypeMapping TypeName="Gestão_EconomatoModel.Utilizadore">
+              <MappingFragment StoreEntitySet="Utilizadores">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Morada" ColumnName="Morada" />
+                <ScalarProperty Name="Telefone" ColumnName="Telefone" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
